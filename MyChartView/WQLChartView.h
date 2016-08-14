@@ -89,6 +89,14 @@ typedef NS_ENUM(NSInteger ,ChartViewType) {
  *  数值的字号
  */
 @property (nonatomic,assign) NSInteger fontSizeOfNumber;
+/**
+ *  是否填充线状图
+ */
+@property (nonatomic,assign) BOOL isFillLine;
+/**
+ *  填充连线与X轴之间的颜色
+ */
+@property (nonatomic,strong) UIColor *lineFillColor;
 
 //在superView上展示视图 必须调用 参数配置完毕后调用
 - (void)showChartInView:(UIView*)superView;

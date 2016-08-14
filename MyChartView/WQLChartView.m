@@ -126,7 +126,7 @@ NSInteger const xAxleTitleWidth = 20;
                 yMax = maxValue;
             }
             
-         }
+        }
         
     }
     
@@ -265,7 +265,7 @@ NSInteger const xAxleTitleWidth = 20;
             
             [yTitleArray addObject:yValue];
         }
-
+        
     }else{
         yTitleArray = [NSMutableArray arrayWithArray:self.yPointArray];
         [yTitleArray insertObject:@"0" atIndex:0];
@@ -455,7 +455,7 @@ NSInteger const xAxleTitleWidth = 20;
         }
         
         
-
+        
     }
     
 }
@@ -713,6 +713,9 @@ NSInteger const xAxleTitleWidth = 20;
             if (!self.pointColor) {
                 self.pointColor = [UIColor orangeColor];
             }
+            if (self.isFillLine) {
+                self.pointColor = [UIColor whiteColor];
+            }
             //圆点的填充色
             circleLayer.fillColor = CGColorCreateCopyWithAlpha(self.pointColor.CGColor, 1.0);
             circleLayer.strokeStart = 0;
@@ -736,7 +739,14 @@ NSInteger const xAxleTitleWidth = 20;
                     CGFloat lastPointY = (1-(lastYValue/yMax))*(viewHeight-yArrowHeight-titleWidth)+yArrowHeight;
                     
                     //移到中点
-                    [line moveToPoint:CGPointMake(pointX,pointY)];
+                    if (self.isFillLine) {
+                        [line moveToPoint:CGPointMake(pointX, viewHeight-titleWidth)];
+                        [line addLineToPoint:CGPointMake(pointX, pointY)];
+                        
+                    }else{
+                        [line moveToPoint:CGPointMake(pointX,pointY)];
+                    }
+                    
                     
                     if (self.lineIsCurve) {
                         //曲线连接 两个控制点 x为两个点的中间点 y为首末点的y坐标 为了实现平滑连接
@@ -746,6 +756,10 @@ NSInteger const xAxleTitleWidth = 20;
                         [line addLineToPoint:CGPointMake(lastPointX,lastPointY)];
                     }
                     
+                    if (self.isFillLine) {
+                        [line addLineToPoint:CGPointMake(lastPointX, viewHeight-titleWidth)];
+                    }
+                    
                 }
                 lineLayer.path = line.CGPath;
                 lineLayer.lineWidth = self.lineWidth>0?self.lineWidth:2;
@@ -753,7 +767,20 @@ NSInteger const xAxleTitleWidth = 20;
                     self.lineColor = [UIColor blackColor];
                 }
                 lineLayer.strokeColor = self.lineColor.CGColor;
-                lineLayer.fillColor = [UIColor clearColor].CGColor;
+                if (self.isFillLine) {
+                    UIColor *fillColor;
+                    
+                    if (self.lineFillColor) {
+                        fillColor = self.lineFillColor;
+                    }else{
+                        fillColor = [UIColor orangeColor];
+                    }
+                    lineLayer.fillColor = fillColor.CGColor;
+                    
+                }else{
+                    lineLayer.fillColor = [UIColor clearColor].CGColor;
+                }
+                
                 [lineArray addObject:lineLayer];
                 
             }

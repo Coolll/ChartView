@@ -58,20 +58,22 @@
 {
     chartView = [[WQLChartView alloc]initWithFrame:CGRectMake(10, 100,chartWidth, chartHeight)];
     chartView.singleRowWidth = 50;//可注释掉
-    chartView.xValueArray = xValuesArray;
-    chartView.yValueArray = yValuesArray;
     chartView.columnColor = [UIColor lightGrayColor];//可注释掉
     chartView.pointColor = [UIColor orangeColor];//可注释掉
     chartView.xAxleTitle = @"日";//可注释掉
     chartView.yAxleTitle = @"件";//可注释掉
     chartView.type = ChartViewTypeColumn;//可注释掉
     chartView.showLine = YES;//可注释掉
-//    chartView.lineColor = [UIColor blueColor];//可注释掉
+    chartView.lineColor = [UIColor orangeColor];//可注释掉
+    chartView.lineFillColor = [UIColor orangeColor];
+    chartView.isFillLine = NO;
     chartView.lineIsCurve = YES;//可注释掉
     chartView.colorOfNumber = [UIColor redColor];//可注释掉
     chartView.yPointArray = @[@"20",@"40",@"60",@"80",@"100"];//可注释掉
+    chartView.xValueArray = xValuesArray;
+    chartView.yValueArray = yValuesArray;
     [chartView showChartInView:self.view];
-
+    
 }
 
 - (void)loadButton
@@ -105,6 +107,18 @@
     [lineBtn addTarget:self action:@selector(lineTypeButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:lineBtn];
     
+    UIButton *fillBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    fillBtn.frame = CGRectMake((PhoneScreen_WIDTH-100)/2, 380+chartHeight, 100, 50);
+    fillBtn.backgroundColor = RGBColorMaker(43, 163, 236, 1.0);
+    [fillBtn setTitle:@"修改填充" forState:UIControlStateNormal];
+    [fillBtn addTarget:self action:@selector(fillTypeButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:fillBtn];
+    
+}
+- (void)fillTypeButtonAction:(UIButton*)btn
+{
+    chartView.isFillLine = !chartView.isFillLine;
+    [chartView updateView];
 }
 
 - (void)lineTypeButtonAction:(UIButton*)btn
